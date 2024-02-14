@@ -30,6 +30,13 @@ cache.fetch("key") do
   # 3. If missing, run block, populate SlowCache and FastCache
   compute_expensive_value
 end
+
+cache.fetch_multi("key1", "key2") do |key|
+  # 1. fetch_multi from FastCache
+  # 2. For any missing values, fetch_multi from SlowCache and populate FastCache
+  # 3. For any missing values, run block, populate SlowCache and FastCache
+  compute_expensive_value_for(key)
+end
 ```
 
 ## Development
