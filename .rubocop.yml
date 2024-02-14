@@ -1,0 +1,50 @@
+require:
+  - rubocop-rake
+  - rubocop-rspec
+
+AllCops:
+  NewCops: enable
+  TargetRubyVersion: 3.1
+
+Bundler/OrderedGems:
+  Exclude:
+    - gemfiles/*
+
+Metrics/BlockLength:
+  Max: 200
+
+Metrics/MethodLength:
+  Max: 16
+
+Style/ArgumentsForwarding:
+  UseAnonymousForwarding: false
+
+Style/FrozenStringLiteralComment:
+  Exclude:
+    - gemfiles/*
+
+Style/StringLiterals:
+  Enabled: true
+  EnforcedStyle: double_quotes
+
+Style/StringLiteralsInInterpolation:
+  Enabled: true
+  EnforcedStyle: double_quotes
+
+Layout/LineLength:
+  Max: 120
+
+Lint/MissingSuper:
+  Enabled: false
+
+RSpec/ExampleLength:
+  Max: 7
+
+RSpec/MessageSpies:
+  EnforcedStyle: receive
+
+RSpec/MultipleExpectations:
+  Max: 5
+
+RSpec/MultipleMemoizedHelpers:
+  Max: 6
