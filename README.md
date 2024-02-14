@@ -1,4 +1,4 @@
-# ActiveSupport::Cache::LeveledProxy
+# LeveledCache
 
 An `ActiveSupport::Cache::Store` implementation that acts as a proxy over multiple caches ("levels") that are called in order. Caches specified earlier are checked for values earlier.
 
@@ -8,19 +8,29 @@ All interactions use the underlying caches' public APIs, which means that an int
 
 ## Installation
 
-TODO: Replace `UPDATE_WITH_YOUR_GEM_NAME_PRIOR_TO_RELEASE_TO_RUBYGEMS_ORG` with your gem name right after releasing it to RubyGems.org. Please do not do it earlier due to security reasons. Alternatively, replace this section with instructions to install your gem from git if you don't plan to release to RubyGems.org.
-
 Install the gem and add to the application's Gemfile by executing:
 
-    $ bundle add UPDATE_WITH_YOUR_GEM_NAME_PRIOR_TO_RELEASE_TO_RUBYGEMS_ORG
+    $ bundle add leveled_cache
 
 If bundler is not being used to manage dependencies, install the gem by executing:
 
-    $ gem install UPDATE_WITH_YOUR_GEM_NAME_PRIOR_TO_RELEASE_TO_RUBYGEMS_ORG
+    $ gem install leveled_cache
 
 ## Usage
 
-TODO: Write usage instructions here
+```ruby
+FastCache = ActiveSupport::Cache::MemoryStore.new     # fast, in-process cache
+SlowCache = ActiveSupport::Cache::RedisCacheStore.new # slow, out-of-process cache
+
+cache = LeveledCache::Store.new(FastCache, SlowCache)
+
+cache.fetch("key") do
+  # 1. Fetch from FastCache
+  # 2. If missing, fetch from SlowCache and populate FastCache
+  # 3. If missing, run block, populate SlowCache and FastCache
+  compute_expensive_value
+end
+```
 
 ## Development
 
@@ -30,7 +40,7 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/activesupport-cache-leveled_proxy. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [code of conduct](https://github.com/[USERNAME]/activesupport-cache-leveled_proxy/blob/main/CODE_OF_CONDUCT.md).
+Bug reports and pull requests are welcome on GitHub at https://github.com/dpirotte/leveled_cache. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [code of conduct](https://github.com/[USERNAME]/activesupport-cache-leveled_proxy/blob/main/CODE_OF_CONDUCT.md).
 
 ## License
 
@@ -38,4 +48,4 @@ The gem is available as open source under the terms of the [MIT License](https:/
 
 ## Code of Conduct
 
-Everyone interacting in the Activesupport::Cache::LeveledProxy project's codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/[USERNAME]/activesupport-cache-leveled_proxy/blob/main/CODE_OF_CONDUCT.md).
+Everyone interacting in the LeveledCache project's codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/[USERNAME]/activesupport-cache-leveled_proxy/blob/main/CODE_OF_CONDUCT.md).
