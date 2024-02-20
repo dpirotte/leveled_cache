@@ -14,6 +14,11 @@ RSpec.describe LeveledCache::Store do
     expect(described_class::VERSION).not_to be_nil
   end
 
+  it "can instantiate using the ActiveSupport shorthand syntax" do
+    c = ActiveSupport::Cache.lookup_store(:leveled_cache_store, outer, inner)
+    expect(c).to be_a(described_class)
+  end
+
   describe "#fetch" do
     it "populates all levels with the contents of a block" do
       expect(cache.fetch(key) { val }).to eq(val)
