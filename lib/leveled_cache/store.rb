@@ -125,13 +125,13 @@ module LeveledCache
     end
 
     def write_entry(key, entry, **options)
-      @caches.each do |cache|
+      @caches.map do |cache|
         cache.write(key, entry, options)
       end
     end
 
     def delete_entry(key, **options)
-      @caches.each do |cache|
+      @caches.map do |cache|
         cache.delete(key, options)
       end
     end

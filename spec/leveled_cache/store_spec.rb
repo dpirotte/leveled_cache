@@ -85,6 +85,10 @@ RSpec.describe LeveledCache::Store do
       expect(middle.read(key)).to eq(val)
       expect(outer.read(key)).to eq(val)
     end
+
+    it "returns an array of responses from underlying caches" do
+      expect(cache.write(key, val)).to contain_exactly(true, true, true)
+    end
   end
 
   describe "#read" do
@@ -116,6 +120,10 @@ RSpec.describe LeveledCache::Store do
       expect(inner.read(key)).to be_nil
       expect(middle.read(key)).to be_nil
       expect(outer.read(key)).to be_nil
+    end
+
+    it "returns an array of responses from underlying caches" do
+      expect(cache.delete(key)).to contain_exactly(false, false, false)
     end
   end
 end
