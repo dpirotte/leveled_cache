@@ -22,8 +22,6 @@ module LeveledCache
   # care to configure underlying caches accordingly. For example, it may
   # be desirable to use NullCoder on an earlier MemoryStore.
   class Store < ActiveSupport::Cache::Store
-    VERSION = "0.1.0"
-
     # Create a new LeveledCacheProxy that calls cache methods on
     # one or more underlying caches in order.
     #

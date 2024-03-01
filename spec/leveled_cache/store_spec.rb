@@ -10,10 +10,6 @@ RSpec.describe LeveledCache::Store do
   let(:key) { "foo" }
   let(:val) { "bar" }
 
-  it "has a version number" do
-    expect(described_class::VERSION).not_to be_nil
-  end
-
   it "can instantiate using the ActiveSupport shorthand syntax" do
     c = ActiveSupport::Cache.lookup_store(:leveled_cache_store, outer, inner)
     expect(c).to be_a(described_class)
