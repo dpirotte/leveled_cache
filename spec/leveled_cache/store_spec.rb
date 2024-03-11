@@ -33,7 +33,7 @@ RSpec.describe LeveledCache::Store do
   end
 
   describe "#fetch_multi" do
-    let(:entries) { { "k1" => "v1", "k2" => "v2" } }
+    let(:entries) { {"k1" => "v1", "k2" => "v2"} }
 
     it "populates all levels from the contents of a block" do
       vals = cache.fetch_multi(*entries.keys) do |k|

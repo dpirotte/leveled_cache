@@ -90,10 +90,10 @@ module LeveledCache
 
       if missing.any?
         writes = if rest.any?
-                   _fetch_multi(rest, missing, options, &)
-                 else
-                   missing.index_with(&)
-                 end
+          _fetch_multi(rest, missing, options, &)
+        else
+          missing.index_with(&)
+        end
 
         first.write_multi(writes, options)
         reads.merge!(writes)
