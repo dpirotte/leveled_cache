@@ -85,7 +85,12 @@ module LeveledCache
     def _fetch_multi(caches, names, options, &)
       first, *rest = caches
 
-      reads = first.read_multi(*names, **options)
+      reads = if first.is_a?(self.class)
+        first.fetch_multi(*names, **options, &)
+      else
+        first.read_multi(*names, **options)
+      end
+
       missing = names - reads.keys
 
       if missing.any?
@@ -95,7 +100,7 @@ module LeveledCache
           missing.index_with(&)
         end
 
-        first.write_multi(writes, options)
+        first.write_multi(writes, **options)
         reads.merge!(writes)
       end
 
@@ -107,7 +112,7 @@ module LeveledCache
     def _fetch(caches, name, options, &block)
       first, *rest = caches
 
-      first.fetch(name, options) do
+      first.fetch(name, **options) do
         if rest.any?
           _fetch(rest, name, options, &block)
         else
@@ -118,13 +123,13 @@ module LeveledCache
 
     def read_entry(key, **options)
       @caches.lazy.map do |cache|
-        cache.read(key, options)
+        cache.read(key, **options)
       end.compact.first
     end
 
     def write_entry(key, entry, **options)
       @caches.map do |cache|
-        cache.write(key, entry, options)
+        cache.write(key, entry, **options)
       end
     end
 
