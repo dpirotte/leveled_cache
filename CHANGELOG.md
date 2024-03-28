@@ -1,6 +1,7 @@
 ## [Unreleased]
 
-- Support nested LeveledCaches
+- Optimize `read_multi`
+- Support nested `LeveledCache`
 
 ## [0.2.0] - 2024-02-26
 

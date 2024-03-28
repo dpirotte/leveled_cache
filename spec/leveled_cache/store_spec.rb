@@ -117,6 +117,20 @@ RSpec.describe LeveledCache::Store do
         expect(cache.delete(key).flatten).to contain_exactly(false, false, false)
       end
     end
+
+    describe "#read_multi" do
+      let(:entries) { {"k1" => "v1", "k2" => "v2", "k3" => "v3"} }
+
+      it "reads each key from the first populated level" do
+        entries.zip([outer, middle, inner]).each do |(k, v), c|
+          c.write(k, v)
+        end
+
+        expect(middle).to receive(:read_multi).with("k2", "k3").and_call_original
+        expect(inner).to receive(:read_multi).with("k3").and_call_original
+        expect(cache.read_multi(*entries.keys)).to eq(entries)
+      end
+    end
   end
 
   let(:outer) { ActiveSupport::Cache::MemoryStore.new(namespace: "outer") }

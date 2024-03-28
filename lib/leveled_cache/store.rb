@@ -70,6 +70,10 @@ module LeveledCache
       read_entry(name, **options)
     end
 
+    def read_multi(*names, **options)
+      read_multi_entries(names, **options)
+    end
+
     # Writes the value to all cache levels with the provided key.
     #
     # Options are passed through to the underlying caches.
@@ -137,6 +141,24 @@ module LeveledCache
       @caches.map do |cache|
         cache.delete(key, options)
       end
+    end
+
+    def read_multi_entries(*keys, **options)
+      _read_multi_entries(@caches, *keys, **options)
+    end
+
+    def _read_multi_entries(caches, keys, **options)
+      first, *rest = caches
+
+      reads = first.read_multi(*keys, **options)
+
+      missing = keys - reads.keys
+
+      if missing.any? && rest.any?
+        reads.merge!(_read_multi_entries(rest, missing, **options))
+      end
+
+      reads
     end
   end
 end
