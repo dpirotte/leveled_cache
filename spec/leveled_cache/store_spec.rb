@@ -131,6 +131,19 @@ RSpec.describe LeveledCache::Store do
         expect(cache.read_multi(*entries.keys)).to eq(entries)
       end
     end
+
+    describe "#write_multi" do
+      let(:entries) { {"k1" => "v1", "k2" => "v2", "k3" => "v3"} }
+
+      it "writes to all levels" do
+        cache.write_multi(entries)
+
+        expect(cache.read_multi(*entries.keys)).to eq(entries)
+        expect(inner.read_multi(*entries.keys)).to eq(entries)
+        expect(middle.read_multi(*entries.keys)).to eq(entries)
+        expect(outer.read_multi(*entries.keys)).to eq(entries)
+      end
+    end
   end
 
   let(:outer) { ActiveSupport::Cache::MemoryStore.new(namespace: "outer") }

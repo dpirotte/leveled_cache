@@ -1,6 +1,7 @@
 ## [Unreleased]
 
 - Optimize `read_multi`
+- Implement `write_multi`
 - Support nested `LeveledCache`
 
 ## [0.2.0] - 2024-02-26

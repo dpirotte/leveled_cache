@@ -70,6 +70,11 @@ module LeveledCache
       read_entry(name, **options)
     end
 
+    # Reads data from the caches in order using the given keys. Data
+    # is returned from the first cache level with data for a key.
+    # Otherwise, +{}+ is returned.
+    #
+    # Options are passed through to the underlying caches.
     def read_multi(*names, **options)
       read_multi_entries(names, **options)
     end
@@ -79,6 +84,13 @@ module LeveledCache
     # Options are passed through to the underlying caches.
     def write(name, value, **options)
       write_entry(name, value, **options)
+    end
+
+    # Writes the key value pairs to all cache levels.
+    #
+    # Options are passed through to the underlying caches.
+    def write_multi(hash, **options)
+      write_multi_entries(hash, **options)
     end
 
     private
@@ -159,6 +171,12 @@ module LeveledCache
       end
 
       reads
+    end
+
+    def write_multi_entries(hash, **options)
+      @caches.map do |cache|
+        cache.write_multi(hash)
+      end
     end
   end
 end
