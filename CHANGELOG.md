@@ -2,6 +2,7 @@
 
 - Optimize `read_multi`
 - Implement `write_multi`
+- Fix `delete` so that keys aren't double-namespaced
 - Support nested `LeveledCache`
 
 ## [0.2.0] - 2024-02-26

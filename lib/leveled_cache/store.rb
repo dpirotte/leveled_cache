@@ -86,6 +86,9 @@ module LeveledCache
       write_entry(name, value, **options)
     end
 
+    # Deletes the value from all cache levels with the provided key.
+    #
+    # Options are passed through to the underlying caches.
     def delete(name, **options)
       delete_entry(name, **options)
     end
