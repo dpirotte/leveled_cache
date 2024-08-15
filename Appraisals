@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-%w[6.1 7.0 7.1].each do |version|
+%w[6.1 7.0 7.1 7.2].each do |version|
   appraise "activesupport-#{version}" do
     gem "activesupport", "~> #{version}.0"
   end
