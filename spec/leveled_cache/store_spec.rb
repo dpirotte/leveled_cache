@@ -113,6 +113,15 @@ RSpec.describe LeveledCache::Store do
         expect(outer.read(key)).to be_nil
       end
 
+      it "does not double namespace keys" do
+        args = {namespace: "ns"}
+        cache.write(key, val, **args)
+        expect(cache.read(key, **args)).to eq(val)
+
+        cache.delete(key, **args)
+        expect(cache.read(key, **args)).to be_nil
+      end
+
       it "returns an array of responses from underlying caches" do
         expect(cache.delete(key).flatten).to contain_exactly(false, false, false)
       end
@@ -146,9 +155,10 @@ RSpec.describe LeveledCache::Store do
     end
   end
 
-  let(:outer) { ActiveSupport::Cache::MemoryStore.new(namespace: "outer") }
-  let(:middle) { ActiveSupport::Cache::MemoryStore.new(namespace: "middle") }
-  let(:inner) { ActiveSupport::Cache::MemoryStore.new(namespace: "inner") }
+  let(:klass) { ActiveSupport::Cache::MemoryStore }
+  let(:outer) { klass.new(namespace: "outer") }
+  let(:middle) { klass.new(namespace: "middle") }
+  let(:inner) { klass.new(namespace: "inner") }
 
   context "one level" do
     subject(:cache) { described_class.new(outer, middle, inner) }

@@ -86,6 +86,10 @@ module LeveledCache
       write_entry(name, value, **options)
     end
 
+    def delete(name, **options)
+      delete_entry(name, **options)
+    end
+
     # Writes the key value pairs to all cache levels.
     #
     # Options are passed through to the underlying caches.
@@ -151,7 +155,7 @@ module LeveledCache
 
     def delete_entry(key, **options)
       @caches.map do |cache|
-        cache.delete(key, options)
+        cache.delete(key, **options)
       end
     end
 
