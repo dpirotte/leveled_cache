@@ -1,4 +1,4 @@
-## [Unreleased]
+## [0.3.0] - 2024-08-15
 
 - Optimize `read_multi`
 - Implement `write_multi`
